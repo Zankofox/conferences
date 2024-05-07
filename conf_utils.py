@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
-import numpy as np
-import datetime
+
 df_video = pd.read_excel('conf.xlsx', sheet_name='videos')
 def print_header(bar=True):
     st.markdown("""
