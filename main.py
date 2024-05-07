@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import os
 from overview import print_tag_overview, print_author_overview
 import conf_utils as cf
 
@@ -20,5 +19,4 @@ def print_home(df_video):
 
 def main():
     print_home(df_video)
-
 main()
