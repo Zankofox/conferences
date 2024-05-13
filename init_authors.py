@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-import conf_utils as cf
+import utils as cf
 
 df_video = pd.read_excel('conf.xlsx', sheet_name='videos')
 df_author = cf.get_df_author(df_video)

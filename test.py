@@ -1,11 +1,10 @@
 import pandas as pd
-import conf_utils as cf
+import utils as cf
 from pytube import YouTube
-from datetime import datetime
 
-df_video = pd.read_excel('conf.xlsx', sheet_name='videos')
+df_video = pd.read_excel('conf.xlsx')
 dico_video = df_video.set_index('video_id').to_dict(orient='index')
-df_tags = cf.get_df_tags(df_video)
+x = 4
 
 def update_input(df_video):
     video_ids = list(df_video['video_id'])
@@ -47,6 +46,7 @@ def update_input(df_video):
 
 stc = dico_video[1]['startTimeCode']
 qtc = dico_video[1]['questionsTimeCode']
+
 a = cf.get_sec_from_tc(pd.to_datetime(stc))
 x = 4
 
