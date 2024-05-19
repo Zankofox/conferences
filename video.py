@@ -42,13 +42,13 @@ def print_video_overview(video_ids, ignore_author=False):
 def page_video(video_id):
     st.set_page_config(page_title='Conférences.fr', page_icon= '💡', layout='wide')
     df_video = ut.df_video
-    dico_video = ut.dico_video[video_id]
-    author = dico_video['author']
-    name = dico_video['name']
-    tags = [x for x in [dico_video['tag1'], dico_video['tag2'], dico_video['tag3']] if str(x) != 'nan']
-    stc = dico_video['startTimeCode']
-    qtc = dico_video['questionsTimeCode']
-    link = dico_video['link']
+    dico_video_temp = ut.dico_video[video_id]
+    author = dico_video_temp['author']
+    name = dico_video_temp['name']
+    tags = [x for x in [dico_video_temp['tag1'], dico_video_temp['tag2'], dico_video_temp['tag3']] if str(x) != 'nan']
+    stc = dico_video_temp['startTimeCode']
+    qtc = dico_video_temp['questionsTimeCode']
+    link = dico_video_temp['link']
     video_overview_ids = list(df_video.loc[
                                   (df_video['author'] == author) | (df_video['tag1'].isin(tags)) | (
                                       df_video['tag2'].isin(tags)) | (

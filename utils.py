@@ -1,6 +1,53 @@
 import pandas as pd
 import streamlit as st
+import os
+import shutil
 
+
+def move_and_rename_file_if_exists(file_path, target_directory, new_file_name):
+    # Debugging: Print input parameters
+    print(f"file_path: {file_path}")
+    print(f"target_directory: {target_directory}")
+    print(f"new_file_name: {new_file_name}")
+
+    # Check for invalid characters in new_file_name
+    invalid_chars = '<>:"/\\|?*'
+    if any(char in new_file_name for char in invalid_chars):
+        print(f"Error: The new file name '{new_file_name}' contains invalid characters.")
+        return
+
+    # Ensure the file exists
+    if os.path.exists(file_path):
+        # Ensure the target directory exists
+        if not os.path.exists(target_directory):
+            os.makedirs(target_directory)
+
+        # Construct the new file path
+        new_file_path = os.path.join(target_directory, new_file_name)
+
+        # Debugging: Print new file path
+        print(f"new_file_path: {new_file_path}")
+
+        # Move and rename the file
+        try:
+            shutil.move(file_path, new_file_path)
+            print(f"File '{file_path}' moved to '{new_file_path}' successfully.")
+        except Exception as e:
+            print(f"Error moving file '{file_path}': {e}")
+    else:
+        print(f"File '{file_path}' does not exist.")
+
+
+def check_and_delete_file(filepath):
+    """Check if a file exists and delete it if it does."""
+    try:
+        if os.path.isfile(filepath):
+            os.remove(filepath)
+            print(f"File '{filepath}' has been deleted.")
+        else:
+            print(f"File '{filepath}' does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 def print_header(bar=True):
     st.markdown("""
             <style>
@@ -114,7 +161,7 @@ def get_tag_video(df_video):
 
 
 # VIDEOS
-df_video = pd.read_excel('conf.xlsx')
+df_video = pd.read_excel('input.xlsx')
 dico_video = df_video.set_index('video_id').to_dict(orient='index')
 
 # AUTHORS
