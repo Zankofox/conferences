@@ -1,9 +1,11 @@
 import pandas as pd
 import streamlit as st
-import utils as ut
 import config as cf
+from utils import print_footer, print_header, get_max_len, get_sec_from_tc, print_tags, df_video, dico_video
 
 def display_video(link_page, image_url, video_name):
+    # a = st.container(height=380, border=False)
+    # with a:
     video_short_name = video_name[:45] + '...'
     if len(video_name) < 48:
         video_short_name = video_name
@@ -13,36 +15,32 @@ def display_video(link_page, image_url, video_name):
 def print_video_overview(video_ids, ignore_author=False):
     c1, c2, c3 = st.columns(cf.VIDEO_COL)
     counter = 0
-    for video_id in video_ids:
-        dico_video_temp = ut.dico_video[video_id]
-        link_page = f'/video_{video_id}'
-        image_url = dico_video_temp['tn_link']
-        video_name = dico_video_temp['name']
+    dico_col = {0: c1, 1: c2, 2: c3}
+    df_ids = pd.DataFrame({'id': video_ids, 'row': [int(x / 3) + 1 for x in range(len(video_ids))]})
+    for row in list(set(df_ids['row'])):
+        row_ids = list(df_ids.loc[df_ids['row'] == row, 'id'])
+        max_len = get_max_len(row_ids)
 
-        if counter % cf.VIDEO_COL == 0:
-            with c1:
+        if max_len > 65:
+            height = 55
+        else:
+            height = 30
+        for video_id in row_ids:
+            nombre = counter % cf.VIDEO_COL
+            dico_video_temp = dico_video[video_id]
+            link_page = f'/video_{video_id}'
+            image_url = dico_video_temp['tn_link']
+            video_name = dico_video_temp['name']
+            with dico_col[nombre]:
                 a = st.container(border=True)
                 with a:
                     display_video(link_page, image_url, video_name)
-                    ut.print_tags(video_id, ignore_authors=ignore_author)
-        if counter % cf.VIDEO_COL == 1:
-            with c2:
-                a = st.container(border=True)
-                with a:
-                    display_video(link_page, image_url, video_name)
-                    ut.print_tags(video_id, ignore_authors=ignore_author)
-        if counter % cf.VIDEO_COL == 2:
-            with c3:
-                a = st.container(border=True)
-                with a:
-                    display_video(link_page, image_url, video_name)
-                    ut.print_tags(video_id, ignore_authors=ignore_author)
-        counter += 1
+                    print_tags(video_id, height, ignore_author)
+                counter += 1
 
 def page_video(video_id):
     st.set_page_config(page_title='Conférences.fr', page_icon= '💡', layout='wide')
-    df_video = ut.df_video
-    dico_video_temp = ut.dico_video[video_id]
+    dico_video_temp = dico_video[video_id]
     author = dico_video_temp['author']
     name = dico_video_temp['name']
     tags = [x for x in [dico_video_temp['tag1'], dico_video_temp['tag2'], dico_video_temp['tag3']] if str(x) != 'nan']
@@ -55,41 +53,40 @@ def page_video(video_id):
                                       df_video['tag3'].isin(tags)), 'video_id'])
     if video_id in video_overview_ids:
         video_overview_ids.remove(video_id)
-    ut.print_header()
+    print_header()
     with st.container(border=False):
         c1, c2 = st.columns([4, 1])
         with c1:
             st.markdown(
                 f'''<p style="font-size:36px; text-align:left; font-family:Tahoma;"><strong>''' + name + '''</strong></p>''',
                 unsafe_allow_html=True)
-    ut.print_tags(video_id)
+    print_tags(video_id, height=25)
 
     with st.container():
         a = st.empty()
         with a:
             st.video(link)
-
         # BUTTONS
         if (str(stc) != 'nan') & (str(qtc) != 'nan'):
             c1, c2 = st.columns(2)
             with c1:
                 if str(stc) != 'nan':
                     if st.button('Début de la conférence', use_container_width=True):
-                        skip_time = ut.get_sec_from_tc(pd.to_datetime(stc))
+                        skip_time = get_sec_from_tc(pd.to_datetime(stc))
                         with a:
                             st.video(link, start_time=skip_time, autoplay=True)
             with c2:
                 if str(qtc) != 'nan':
                     if st.button("Passer aux questions", use_container_width=True):
 
-                        skip_time = ut.get_sec_from_tc(pd.to_datetime(qtc))
+                        skip_time = get_sec_from_tc(pd.to_datetime(qtc))
                         with a:
                             st.video(link, start_time=skip_time, autoplay=True)
 
         if (str(stc) != 'nan') & (str(qtc) == 'nan'):
             if str(stc) != 'nan':
                 if st.button('Début de la conférence', use_container_width=True):
-                    skip_time = ut.get_sec_from_tc(pd.to_datetime(stc))
+                    skip_time = get_sec_from_tc(pd.to_datetime(stc))
                     with a:
                         st.video(link, start_time=skip_time, autoplay=True)
         st.markdown(
@@ -107,3 +104,4 @@ def page_video(video_id):
         st.header('Conférences connexes')
         st.markdown(' ')
         print_video_overview(video_overview_ids)
+        print_footer()

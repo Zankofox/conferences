@@ -14,10 +14,13 @@ def fetch_data_youtube():
     if a !='':
         st.session_state.ytlink = a
     st.button('GET DATA')
+
 def add_video():
+    st.title('Ajoute une conférence bro !')
     if 'ytlink' not in st.session_state:
         fetch_data_youtube()
     else:
+        go = True
         with st.form('user_data', clear_on_submit=True):
             st.session_state.yt = YouTube(st.session_state.ytlink)
             st.session_state.go = False
@@ -26,15 +29,18 @@ def add_video():
             link = st.text_input('link', value=st.session_state.ytlink, key="link")
             name = st.text_input('name', value=yt.title, key="name")
             author = st.text_input('author', key="author")
-            video_type = st.text_input('type', key="type")
+            video_type = st.text_input('type', value='Conférence', key="type")
+            categorie1 = st.text_input('Catégorie1', key='c1')
+            categorie2 = st.text_input('Catégorie2', key='c2')
             tag1 = st.text_input('tag1', key="tag1")
             tag2 = st.text_input('tag2', key="tag2")
             tag3 = st.text_input('tag3', key="tag3")
             tag4 = st.text_input('tag4', key="tag4")
-            startTimeCode = st.text_input('startTimeCode', key="startTimeCode")
+            tag5 = st.text_input('tag5', key="tag5")
+            startTimeCode = st.text_input('startTimeCode', key="startTimeCode", value = '00:00:00')
             questionsTimeCode = st.text_input('questionsTimeCode', key="questionsTimeCode")
-            audioQuality = st.text_input('audioQuality', key="audioQuality")
-            videoQuality = st.text_input('videoQuality', key="videoQuality")
+            audioQuality = st.text_input('audioQuality', value='High', key="audioQuality")
+            videoQuality = st.text_input('videoQuality', value='High', key="videoQuality")
             length = st.text_input('length', value=pd.to_datetime(yt.length, unit='s').time(), key="length")
             publish_date = st.date_input('publish_date', value=pd.Timestamp(yt.publish_date), key="publish_date")
             tn_link = st.text_input('tn_link', value=yt.thumbnail_url, key="tn_link")
@@ -46,10 +52,13 @@ def add_video():
                     'name': name,
                     'author': author,
                     "type": video_type,
+                    "categorie1" : categorie1,
+                    "categorie2" : categorie2,
                     'tag1': tag1,
                     'tag2': tag2,
                     'tag3': tag3,
                     'tag4': tag4,
+                    'tag5' : tag5,
                     'startTimeCode': startTimeCode,
                     'questionsTimeCode': questionsTimeCode,
                     'audioQuality': audioQuality,
@@ -59,7 +68,19 @@ def add_video():
                     'tn_link': tn_link
                 }
                 df = pd.DataFrame([user_data], index=[0])
-                df.to_excel('df_temp.xlsx')
+                if df['name'][0] in (list(df_video['name'])):
+                    go = False
+                    st.error('Video already present')
+
+                for col in [x for x in user_data.keys() if x not in ['questionsTimeCode', 'tag2', 'tag3', 'tag4','tag5', 'categorie2']]:
+                    if df[col][0] == '':
+                        st.error(f'{col} cannot be empty !')
+                        go = False
+
+                if go:
+                    df.to_excel('df_temp.xlsx')
+                else:
+                    st.stop()
         if os.path.exists('df_temp.xlsx'):
             df_temp = pd.read_excel('df_temp.xlsx')
             final_df = pd.concat([df_video, df_temp])
@@ -69,6 +90,5 @@ def add_video():
             check_and_delete_file('df_temp.xlsx')
             st.write(df)
             st.write(final_df.sort_values(by='video_id', ascending=False))
-
 
 add_video()

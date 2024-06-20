@@ -1,11 +1,7 @@
 import os
-import utils as ut
+import utils
 
-df_video = ut.df_video
-dico_video = ut.dico_video
-df_author = ut.df_author
-df_tags = ut.df_tags
-dico_tags = ut.dico_tag
+
 
 def create_module(folder_path, module_name, code):
     if not os.path.exists(folder_path):
@@ -31,8 +27,8 @@ def create_module_author(author_id):
 page_author({author_id})"""
     create_module("./pages", f'author_{author_id}', code=code)
 
-def check_upload_author(df_author):
-    for author_id in list(df_author['author_id']):
+def check_upload_author(author_ids):
+    for author_id in author_ids:
         module_name= f'author_{author_id}.py'
         if file_exists_in_current_directory(module_name):
             print(f"Module '{module_name}' already exists. Skipping creation.")
@@ -46,8 +42,8 @@ def create_module_tag(tag_id):
 page_tag({tag_id})"""
     create_module("./pages", f'tag_{tag_id}', code=code)
 
-def check_upload_tags(df_tags):
-    for tag_id in list(df_tags['tag_id']):
+def check_upload_tags(tag_ids):
+    for tag_id in tag_ids:
         module_name= f'tag_{tag_id}.py'
         if file_exists_in_current_directory(module_name):
             print(f"Module '{module_name}' already exists. Skipping creation.")
@@ -59,8 +55,8 @@ def create_module_video(video_id):
 page_video({video_id})"""
     create_module("./pages", f'video_{video_id}', code=code)
 
-def check_upload_video(df_video):
-    for video_id in list(df_video['video_id']):
+def check_upload_video(video_ids):
+    for video_id in video_ids:
         module_name = f'video_{video_id}.py'
         if file_exists_in_current_directory(module_name):
             print(f"Module '{module_name}' already exists. Skipping creation.")
@@ -69,8 +65,11 @@ def check_upload_video(df_video):
 
 
 def check_upload_all():
-    check_upload_video(df_video)
-    check_upload_tags(df_tags)
-    check_upload_author(df_author)
+    video_ids = list(set(utils.df_video['video_id']))
+    author_ids = list(set(utils.df_author['author_id']))
+    tag_ids = list(set(utils.df_tags['tag_id']))
+    check_upload_video(video_ids)
+    check_upload_tags(tag_ids)
+    check_upload_author(author_ids)
 
 check_upload_all()
