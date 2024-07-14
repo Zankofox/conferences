@@ -57,7 +57,7 @@ def print_header(bar=True):
     st.markdown("""
             <style>
                    .block-container {
-                        padding-top: 1rem;
+                        padding-top: 2rem;
                         padding-bottom: 0rem;
                         padding-left: 5rem;
                         padding-right: 5rem;
