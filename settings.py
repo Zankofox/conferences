@@ -30,8 +30,9 @@ def add_video():
             name = st.text_input('name', value=yt.title, key="name")
             author = st.text_input('author', key="author")
             video_type = st.text_input('type', value='Conférence', key="type")
-            categorie1 = st.text_input('Catégorie1', key='c1')
-            categorie2 = st.text_input('Catégorie2', key='c2')
+            ranking = st.text_input('ranking', value = 5, key='ranking')
+            categorie1 = st.text_input('cat1', key='c1')
+            categorie2 = st.text_input('cat2', key='c2')
             tag1 = st.text_input('tag1', key="tag1")
             tag2 = st.text_input('tag2', key="tag2")
             tag3 = st.text_input('tag3', key="tag3")
@@ -52,8 +53,9 @@ def add_video():
                     'name': name,
                     'author': author,
                     "type": video_type,
-                    "categorie1" : categorie1,
-                    "categorie2" : categorie2,
+                    "cat1" : categorie1,
+                    "cat2" : categorie2,
+                    "ranking" : ranking,
                     'tag1': tag1,
                     'tag2': tag2,
                     'tag3': tag3,
@@ -72,7 +74,7 @@ def add_video():
                     go = False
                     st.error('Video already present')
 
-                for col in [x for x in user_data.keys() if x not in ['questionsTimeCode', 'tag2', 'tag3', 'tag4','tag5', 'categorie2']]:
+                for col in [x for x in user_data.keys() if x not in ['questionsTimeCode', 'tag2', 'tag3', 'tag4','tag5', 'cat2']]:
                     if df[col][0] == '':
                         st.error(f'{col} cannot be empty !')
                         go = False
@@ -83,12 +85,14 @@ def add_video():
                     st.stop()
         if os.path.exists('df_temp.xlsx'):
             df_temp = pd.read_excel('df_temp.xlsx')
+            for col_to_remove in ['Unnamed 0', 'categorie1', 'categorie2']:
+                if col_to_remove in df_temp.columns:
+                    df_temp = df_temp.drop(columns=col_to_remove)
             final_df = pd.concat([df_video, df_temp])
             move_and_rename_file_if_exists('input.xlsx', 'archive_input', f'input_archive_{today}.xlsx')
             final_df.to_excel('input.xlsx', index=False)
             st.success('Conférence ajoutée !')
             check_and_delete_file('df_temp.xlsx')
-            st.write(df)
-            st.write(final_df.sort_values(by='video_id', ascending=False))
-
+            st.write(df.T)
+            # st.write(final_df.sort_values(by='video_id', ascending=False))
 add_video()

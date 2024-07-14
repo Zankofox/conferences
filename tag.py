@@ -16,15 +16,7 @@ def display_tag(link_page, image_url, tag_name, count_video):
                 </div>
                 """, unsafe_allow_html=True)
 
-
 def print_tag_overview():
-    count_tag = len(df_tags_overview)
-    st.markdown(f"""
-            <div style="font-family: Lato; font-size: 24px; padding-bottom: 10px;">
-            <span style="font-size: 38px;font-weight: bold;">Thèmes</span>
-            <span style="font-size: 18px;">({count_tag})</span>
-            </div>
-            """, unsafe_allow_html=True)
     c1, c2, c3, c4 = st.columns(cf.TAG_COL)
     counter = 0
     dico_tags = df_tags_overview.sort_values(by='count', ascending=False).set_index('tag_id').to_dict(orient='index')

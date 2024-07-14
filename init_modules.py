@@ -50,6 +50,19 @@ def check_upload_tags(tag_ids):
         else:
             create_module_tag(tag_id)
 
+def create_module_cat(cat_id):
+    code = f"""from categories import page_cat
+page_cat({cat_id})"""
+    create_module("./pages", f'cat_{cat_id}', code=code)
+
+def check_upload_cats(cat_ids):
+    for cat_id in cat_ids:
+        module_name= f'cat_{cat_id}.py'
+        if file_exists_in_current_directory(module_name):
+            print(f"Module '{module_name}' already exists. Skipping creation.")
+        else:
+            create_module_cat(cat_id)
+
 def create_module_video(video_id):
     code = f"""from video import page_video
 page_video({video_id})"""
@@ -68,8 +81,10 @@ def check_upload_all():
     video_ids = list(set(utils.df_video['video_id']))
     author_ids = list(set(utils.df_author['author_id']))
     tag_ids = list(set(utils.df_tags['tag_id']))
+    cat_ids = list(set(utils.df_cats['cat_id']))
     check_upload_video(video_ids)
     check_upload_tags(tag_ids)
     check_upload_author(author_ids)
+    check_upload_cats(cat_ids)
 
 check_upload_all()

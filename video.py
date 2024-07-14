@@ -20,7 +20,6 @@ def print_video_overview(video_ids, ignore_author=False):
     for row in list(set(df_ids['row'])):
         row_ids = list(df_ids.loc[df_ids['row'] == row, 'id'])
         max_len = get_max_len(row_ids)
-
         if max_len > 65:
             height = 55
         else:
