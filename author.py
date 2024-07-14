@@ -9,12 +9,15 @@ from video import print_video_overview
 def display_author(link_page, image_url, author_name, count_video):
     a = st.container(border=True)
     with a:
+        st.markdown(
+            f'<a href="{link_page}" target="_self"><img src="{image_url}" style="width:{cf.IMAGE_WIDTH_PERCENT}%;height:auto;"></a>',
+            unsafe_allow_html=True)
         st.markdown(f"""
-        <div style="font-family: Lato; font-size: 24ddpx; padding-bottom: 10px;">
-        <span style="font-weight: bold;">{author_name}</span>
-        <span style="font-size: 14px;">({int(count_video)})</span>
-        </div>
-        """, unsafe_allow_html=True)
+                <div style="font-family: Lato; font-size: 24px; padding-bottom: 10px;">
+                <span style="font-weight: bold;">{author_name}</span>
+                <span style="font-size: 14px;">({count_video})</span>
+                </div>
+                """, unsafe_allow_html=True)
 
 def display_rockstar(link_page, image_path, author_name):
     cat1_name = df_rockstar.loc[df_rockstar['rockstar'] == author_name, 'cat1'].values[0]
@@ -78,7 +81,7 @@ def print_rock_star():
 
 def print_author_overview():
     counter = 0
-    c1, c2, c3 = st.columns(cf.AUTHOR_COL)
+    c1, c2, c3, c4 = st.columns(cf.AUTHOR_COL)
     for k, v in dico_author.items():
         link_page = f'/author_{k}'
         image_url = v['tn_link']
@@ -92,6 +95,9 @@ def print_author_overview():
                 display_author(link_page, image_url, author_name, count_video)
         if counter % cf.AUTHOR_COL == 2:
             with c3:
+                display_author(link_page, image_url, author_name, count_video)
+        if counter % cf.AUTHOR_COL == 3:
+            with c4:
                 display_author(link_page, image_url, author_name, count_video)
         counter += 1
 

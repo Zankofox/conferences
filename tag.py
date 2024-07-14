@@ -1,3 +1,5 @@
+import random
+
 import streamlit as st
 import config as cf
 from utils import print_header, print_footer, df_video, df_tags_overview
@@ -51,5 +53,6 @@ def page_tag(tag_id):
                                      df_video['tag5'] == f'{tag_name}'), 'video_id'])
     print_header()
     st.title(f'{tag_name}')
+    random.shuffle(video_ids)
     print_video_overview(video_ids)
     print_footer()

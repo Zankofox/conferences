@@ -222,7 +222,7 @@ def get_df_tags_overview(df_tags):
 
 def get_df_cats(df_rockstar):
     df_cats = pd.DataFrame()
-    for i in range(1, cf.MAX_CATS):
+    for i in range(1, cf.MAX_CATS+1):
         df_to_add = df_video.loc[
             ~df_video[f'cat{i}'].isna(), [f'cat{i}', 'link', 'tn_link', 'name', 'author']].rename(
             columns={f'cat{i}': 'cat'})

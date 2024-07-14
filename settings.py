@@ -85,7 +85,7 @@ def add_video():
                     st.stop()
         if os.path.exists('df_temp.xlsx'):
             df_temp = pd.read_excel('df_temp.xlsx')
-            for col_to_remove in ['Unnamed 0', 'categorie1', 'categorie2']:
+            for col_to_remove in ['Unnamed: 0', 'categorie1', 'categorie2']:
                 if col_to_remove in df_temp.columns:
                     df_temp = df_temp.drop(columns=col_to_remove)
             final_df = pd.concat([df_video, df_temp])

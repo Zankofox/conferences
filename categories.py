@@ -1,5 +1,6 @@
 import streamlit as st
 import config as cf
+import random
 from utils import print_header, print_footer, df_video, df_cat_overview, display_menu, get_cat_id_from_name
 from video import print_video_overview
 
@@ -56,5 +57,6 @@ def page_cat(cat_id):
         st.image(f'assets/categories/{cat_name}.png', width=80)
     with c2:
         st.title(f'{cat_name}')
+    random.shuffle(video_ids)
     print_video_overview(video_ids)
     print_footer()
