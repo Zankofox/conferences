@@ -18,7 +18,6 @@ def display_author(link_page, image_url, author_name, count_video):
                 <span style="font-size: 14px;">({count_video})</span>
                 </div>
                 """, unsafe_allow_html=True)
-
 def display_rockstar(link_page, image_path, author_name):
     cat1_name = df_rockstar.loc[df_rockstar['rockstar'] == author_name, 'cat1'].values[0]
     cat1_id = get_cat_id_from_name(cat1_name)
@@ -31,7 +30,7 @@ def display_rockstar(link_page, image_path, author_name):
         with col2:
             b = st.container(height=380, border=False)
             with b:
-                quote = random.choice(list(df_quotes.loc[df_quotes['Author'] == author_name, 'Quote']))
+                quote = random.choice(list(df_quotes.loc[df_quotes['Author'] == author_name, 'Quote'])).capitalize()
                 quote_size = get_quote_size(quote)
                 st.markdown(f"""
                     <div style="
@@ -82,22 +81,14 @@ def print_rock_star():
 def print_author_overview():
     counter = 0
     c1, c2, c3, c4 = st.columns(cf.AUTHOR_COL)
+    dico_col = {0: c1, 1: c2, 2: c3, 3: c4}
     for k, v in dico_author.items():
         link_page = f'/author_{k}'
         image_url = v['tn_link']
         author_name = v['author']
         count_video = v['count']
-        if counter % cf.AUTHOR_COL == 0:
-            with c1:
-                display_author(link_page, image_url, author_name, count_video)
-        if counter % cf.AUTHOR_COL == 1:
-            with c2:
-                display_author(link_page, image_url, author_name, count_video)
-        if counter % cf.AUTHOR_COL == 2:
-            with c3:
-                display_author(link_page, image_url, author_name, count_video)
-        if counter % cf.AUTHOR_COL == 3:
-            with c4:
+        nombre = counter % cf.AUTHOR_COL
+        with dico_col[nombre]:
                 display_author(link_page, image_url, author_name, count_video)
         counter += 1
 

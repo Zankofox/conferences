@@ -1,2 +1,2 @@
 from video import page_video
-page_video(73)
+page_video(95)

@@ -20,7 +20,8 @@ def display_cat(link_page, image_url, cat_name, count_video):
 def print_cat_overview():
     c1, c2, c3 = st.columns(cf.CAT_COL)
     counter = 0
-    dico_cats = df_cat_overview.sort_values(by='count', ascending=False).set_index('cat_id').to_dict(orient='index')
+    dico_col = {0: c1, 1: c2, 2: c3}
+    dico_cats = df_cat_overview.sort_values(by='cat', ascending=True).set_index('cat_id').to_dict(orient='index')
     for k, v in dico_cats.items():
         cat_name = v['cat']
         if cat_name in ['Interview']:
@@ -28,22 +29,11 @@ def print_cat_overview():
         link_page = f'/cat_{k}'
         image_path = f'assets/categories/{cat_name}.png'
         count_cat = v['count']
-        if counter % cf.CAT_COL == 0:
-            with c1:
-                a = st.container(border=True)
-                with a:
-                    display_menu(link_page, image_path, cat_name, count_cat)
-
-        if counter % cf.CAT_COL == 1:
-            with c2:
-                a = st.container(border=True)
-                with a:
-                    display_menu(link_page, image_path, cat_name, count_cat)
-        if counter % cf.CAT_COL == 2:
-            with c3:
-                a = st.container(border=True)
-                with a:
-                    display_menu(link_page, image_path, cat_name, count_cat)
+        nombre = counter % cf.CAT_COL
+        with dico_col[nombre]:
+            a = st.container(border=True)
+            with a:
+                display_menu(link_page, image_path, cat_name, count_cat)
         counter += 1
 
 def page_cat(cat_id):

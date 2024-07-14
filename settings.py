@@ -1,14 +1,19 @@
+import pandas as pd
+import os
 import streamlit as st
 from datetime import datetime
-import os
-from utils import move_and_rename_file_if_exists, check_and_delete_file
-import pandas as pd
+
+
 from pytube import YouTube
+from utils import move_and_rename_file_if_exists, check_and_delete_file
+
 st.set_page_config(page_title='Conférences.fr', page_icon='⚙', layout='wide')
 today = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")).replace(':','-')
 df_video = pd.read_excel('input.xlsx')
 max_id = max(df_video['video_id']) + 1
-
+path = 'assets/categories'
+filenames = next(os.walk(path), (None, None, []))[2]
+categories2 = [x.replace('.png','') for x in filenames]
 def fetch_data_youtube():
     a = st.text_input('YOUTUBE LINK')
     if a !='':
@@ -31,8 +36,8 @@ def add_video():
             author = st.text_input('author', key="author")
             video_type = st.text_input('type', value='Conférence', key="type")
             ranking = st.text_input('ranking', value = 5, key='ranking')
-            categorie1 = st.text_input('cat1', key='c1')
-            categorie2 = st.text_input('cat2', key='c2')
+            cat1 = st.selectbox(label='Categorie 1', options= categories2, key='c1')
+            cat2 = st.selectbox(label='Categorie 2',options= categories2, key='c2')
             tag1 = st.text_input('tag1', key="tag1")
             tag2 = st.text_input('tag2', key="tag2")
             tag3 = st.text_input('tag3', key="tag3")
@@ -40,8 +45,8 @@ def add_video():
             tag5 = st.text_input('tag5', key="tag5")
             startTimeCode = st.text_input('startTimeCode', key="startTimeCode", value = '00:00:00')
             questionsTimeCode = st.text_input('questionsTimeCode', key="questionsTimeCode")
-            audioQuality = st.text_input('audioQuality', value='High', key="audioQuality")
-            videoQuality = st.text_input('videoQuality', value='High', key="videoQuality")
+            audioQuality = st.selectbox(label='Audio Quality', options=['High', 'Medium', 'Low'], value='High', key="audioQuality")
+            videoQuality = st.selectbox(label='Video Quality', options=['High', 'Medium', 'Low'], value='High', key="videoQuality")
             length = st.text_input('length', value=pd.to_datetime(yt.length, unit='s').time(), key="length")
             publish_date = st.date_input('publish_date', value=pd.Timestamp(yt.publish_date), key="publish_date")
             tn_link = st.text_input('tn_link', value=yt.thumbnail_url, key="tn_link")
@@ -53,8 +58,8 @@ def add_video():
                     'name': name,
                     'author': author,
                     "type": video_type,
-                    "cat1" : categorie1,
-                    "cat2" : categorie2,
+                    "cat1" : cat1,
+                    "cat2" : cat2,
                     "ranking" : ranking,
                     'tag1': tag1,
                     'tag2': tag2,
