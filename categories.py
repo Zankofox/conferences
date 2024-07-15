@@ -16,7 +16,7 @@ def display_cat(link_page, image_url, cat_name, count_video):
                 <span style="font-size: 14px;">({count_video})</span>
                 </div>
                 """, unsafe_allow_html=True)
-@st.cache_resource(ttl='10m')
+@st.cache_resource
 def print_cat_overview():
     c1, c2, c3 = st.columns(cf.CAT_COL)
     counter = 0

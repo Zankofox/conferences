@@ -90,28 +90,11 @@ def print_footer():
 def get_sec_from_tc(tc):
     return tc.hour * 3600 + tc.minute * 60 + tc.second
 
-
-# def get_tag_id_from_name(tag_name):
-#
-#     dico_tag_name = df_tags_full[['tag', 'tag_id']].set_index('tag').T.to_dict(orient='index')
-#     return dico_tag_name['tag_id'][tag_name]
-
-
 def get_author_id_from_name(author_name):
     return dico_author_name[author_name]['author_id']
 
 def get_cat_id_from_name(cat_name):
     return dico_cat_name[cat_name]['cat_id']
-
-
-# def get_df_author(df_video):
-#     df_author = df_video.copy(deep=True)
-#     df_author_count = df_author['author'].value_counts().reset_index()
-#     df_author = df_author.merge(df_author_count, on='author', how='left')
-#     df_author = df_author[['author', 'name', 'link', 'tn_link', 'count']].groupby('author').first().reset_index()
-#     df_author['author_id'] = [x for x in range(1, len(df_author) + 1)]
-#     return df_author
-
 
 def get_tag_md(tag_id, name, type='tag'):
     if type == 'author':
@@ -120,7 +103,6 @@ def get_tag_md(tag_id, name, type='tag'):
         bg_color = '#293961'
     final_md = f"""<a style='font-family: Lato; font-size: 14px; font-weight: bold;text-decoration:none;color:#ffffff;background-color:{bg_color};padding:4px 8px;border-radius:3px;' href='/{type}_{tag_id}'><em>{name}</em></a> &nbsp;&nbsp;&nbsp;"""
     return final_md
-
 
 def print_tags(video_id, height, ignore_author=False):
     video_name = df_video.loc[df_video['video_id'] == video_id, 'name'].values[0]
@@ -179,6 +161,7 @@ def transform_date(date):
         final_string = f"il y a + de 5 ans"
 
     return final_string
+
 
 def get_video(df_video):
     # Add publish date

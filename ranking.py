@@ -2,7 +2,7 @@ import streamlit as st
 import random as rnd
 from video import print_video_overview
 from utils import df_video
-@st.cache_resource(ttl='10m')
+
 def print_ranking_overview():
     best_rank = 3
     df_video_ranked = df_video.sort_values(by='ranking', ascending=False)

@@ -4,9 +4,10 @@ from tag import print_tag_overview
 from ranking import print_ranking_overview, print_all_ranked
 from categories import print_cat_overview
 from utils import print_header, print_footer, df_author_overview, df_cat_overview, df_tags_overview
-st.set_page_config(page_title='Conférences.fr', page_icon='💡', layout='wide')
+
 
 def main():
+    st.set_page_config(page_title='Conférences.fr', page_icon='💡', layout='wide')
     print_header(bar=False)
     count_author = int(len(df_author_overview))
     count_cat = len(df_cat_overview) - 1  # for Interview

@@ -7,7 +7,7 @@ from datetime import datetime
 from pytube import YouTube
 from utils import move_and_rename_file_if_exists, check_and_delete_file
 
-st.set_page_config(page_title='Conférences.fr', page_icon='⚙', layout='wide')
+# st.set_page_config(page_title='Conférences.fr', page_icon='⚙', layout='wide')
 today = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")).replace(':','-')
 df_video = pd.read_excel('input.xlsx')
 max_id = max(df_video['video_id']) + 1

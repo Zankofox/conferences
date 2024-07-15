@@ -67,7 +67,7 @@ def display_rockstar(link_page, image_path, author_name):
                     <span style="font-weight: bold;padding-bottom: 8px;">{cat2_name}</span>
                     </div>
                     """, unsafe_allow_html=True)
-@st.cache_resource(ttl='10m')
+@st.cache_resource
 def print_rock_star():
     rock_stars = list(df_rockstar['rockstar'])
     random.shuffle(rock_stars)
@@ -77,7 +77,7 @@ def print_rock_star():
         pic_name = rock_star.split()[-1].lower()
         image_path = f'assets/rockstars/final/{pic_name}.png'
         display_rockstar(link_page, image_path, rock_star)
-@st.cache_resource(ttl='10m')
+@st.cache_resource
 def print_author_overview():
     counter = 0
     c1, c2, c3, c4 = st.columns(cf.AUTHOR_COL)
