@@ -12,6 +12,7 @@ def display_video(link_page, image_url, video_name):
     st.markdown(f'<a href="{link_page}" target="_self"><img src="{image_url}" style="width:{cf.IMAGE_WIDTH_PERCENT}%;height:auto;"></a>', unsafe_allow_html=True)
     st.markdown(f'<p style="font-family: Tahoma; font-size: 20px; font-weight: bold;" title="{video_name}">{video_short_name}</p>', unsafe_allow_html=True)
 
+@st.cache_resource
 def print_video_overview(video_ids, ignore_author=False):
     c1, c2, c3 = st.columns(cf.VIDEO_COL)
     counter = 0

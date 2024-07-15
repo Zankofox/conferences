@@ -77,6 +77,7 @@ def print_rock_star():
         pic_name = rock_star.split()[-1].lower()
         image_path = f'assets/rockstars/final/{pic_name}.png'
         display_rockstar(link_page, image_path, rock_star)
+
 @st.cache_resource
 def print_author_overview():
     counter = 0
@@ -91,7 +92,6 @@ def print_author_overview():
         with dico_col[nombre]:
                 display_author(link_page, image_url, author_name, count_video)
         counter += 1
-
 def page_author(author_id):
     st.set_page_config(page_title='Conférences.fr', page_icon='💡', layout='wide')
     author_name = dico_author[author_id]['author']
