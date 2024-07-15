@@ -17,7 +17,7 @@ def display_tag(link_page, image_url, tag_name, count_video):
                 <span style="font-size: 14px;">({count_video})</span>
                 </div>
                 """, unsafe_allow_html=True)
-
+@st.cache_resource(ttl='10m')
 def print_tag_overview():
     c1, c2, c3, c4 = st.columns(cf.TAG_COL)
     dico_col = {0: c1, 1: c2, 2: c3, 3: c4}

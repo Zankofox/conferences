@@ -1,9 +1,10 @@
-from video import print_video_overview
-from utils import df_video
 import streamlit as st
 import random as rnd
+from video import print_video_overview
+from utils import df_video
+@st.cache_resource(ttl='10m')
 def print_ranking_overview():
-    best_rank = 5
+    best_rank = 3
     df_video_ranked = df_video.sort_values(by='ranking', ascending=False)
     ranked_ids_temp = list(df_video_ranked.loc[df_video_ranked['ranking'] == best_rank, 'video_id'])
     rnd.shuffle(ranked_ids_temp)
@@ -18,3 +19,12 @@ def print_top50():
     df_video_ranked = df_video.sort_values(by='ranking', ascending=False)
     ranked_ids = list(df_video_ranked['video_id'])
     print_video_overview(ranked_ids)
+
+def print_all_ranked():
+    dico_rank_header = {1:'OK Tier', 2 : 'Semi-Bangers', 3: 'Bangers'}
+    df_video_ranked = df_video.sort_values(by='ranking', ascending=False)
+    for rank in list(set(df_video_ranked['ranking'])):
+        st.header(dico_rank_header[rank])
+        ranked_ids = list(df_video.loc[df_video['ranking']== rank, 'video_id'])
+        rnd.shuffle(ranked_ids)
+        print_video_overview(ranked_ids)
