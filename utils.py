@@ -101,7 +101,7 @@ def get_tag_md(tag_id, name, type='tag'):
         bg_color = '#da7653'
     else:
         bg_color = '#293961'
-    final_md = f"""<a style='font-family: Lato; font-size: 14px; font-weight: bold;text-decoration:none;color:#ffffff;background-color:{bg_color};padding:4px 8px;border-radius:3px;' href='/{type}_{tag_id}'><em>{name}</em></a> &nbsp;&nbsp;&nbsp;"""
+    final_md = f"""<a style='font-family: Lato; font-size: 14px; font-weight: bold;text-decoration:none;color:#ffffff;background-color:{bg_color};padding:4px 8px;border-radius:3px;' href='/{type}_{tag_id}' target='_self'><em>{name}</em></a> &nbsp;&nbsp;&nbsp;"""
     return final_md
 
 def print_tags(video_id, height, ignore_author=False):
@@ -236,7 +236,7 @@ def display_menu(link_page, image_path, cat_name, count_video):
 
     image_base64 = get_image_base64(image_path)
     html_code = f"""<div style="display: flex; justify-content: center; align-items: center; height: 50;">
-<a href="{link_page}" target="_blank">
+<a href="{link_page}" target='_self'>
     <img src="data:image/png;base64,{image_base64}" style="width:350px; height:350px; padding-top:5px; padding-bottom:10px;">
 </a>
 </div>"""
@@ -255,7 +255,7 @@ def display_photo(link_page, image_path, width=1100, height=500):
             return base64.b64encode(img_file.read()).decode()
     image_base64 = get_image_base64(image_path)
     html_code = f'''
-    <a href="{link_page}" target="_blank">
+    <a href="{link_page}" target='_self'>
         <img src="data:image/png;base64,{image_base64}" style="width:{width}px;height:{height};padding-top:5px;padding-bottom:10px;">
     </a>
     '''
